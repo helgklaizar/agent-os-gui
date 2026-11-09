@@ -1,0 +1,46 @@
+# All 11 event subtypes, one per second (virtual clock). Core data: subtypes are not hardcoded in the GUI.
+name = "all-subtypes"
+
+[[step]]
+at_ms = 1000
+event = { kind = "ai", sub = "agent", level = "ok", text = "Reply ready: build finished", source = "agentd" }
+
+[[step]]
+at_ms = 2000
+event = { kind = "ai", sub = "watch", level = "warn", text = "Watcher: suspicious link in email", source = "agentd" }
+
+[[step]]
+at_ms = 3000
+event = { kind = "ai", sub = "claude", level = "info", text = "Claude: session resumed", source = "agentd" }
+
+[[step]]
+at_ms = 4000
+event = { kind = "ai", sub = "local", level = "ok", text = "Local model ready", source = "agentd" }
+
+[[step]]
+at_ms = 5000
+event = { kind = "task", sub = "sched", level = "info", text = "Scheduled run: backup", source = "agentd" }
+
+[[step]]
+at_ms = 6000
+event = { kind = "task", sub = "deleg", level = "info", text = "Delegated: email reconciliation", source = "agentd" }
+
+[[step]]
+at_ms = 7000
+event = { kind = "task", sub = "done", level = "ok", text = "Done: report", source = "agentd" }
+
+[[step]]
+at_ms = 8000
+event = { kind = "msg", sub = "sys", level = "warn", text = "Battery 15%", source = "agent-sys" }
+
+[[step]]
+at_ms = 9000
+event = { kind = "msg", sub = "wa", level = "info", text = "Anna: hi", source = "agent-gw" }
+
+[[step]]
+at_ms = 10000
+event = { kind = "msg", sub = "tg", level = "info", text = "Boris: call", source = "agent-gw" }
+
+[[step]]
+at_ms = 11000
+event = { kind = "msg", sub = "mail", level = "info", text = "Supplier invoice", source = "agent-gw" }

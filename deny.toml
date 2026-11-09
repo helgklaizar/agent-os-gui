@@ -1,0 +1,62 @@
+# cargo-deny policy for the workspace (licenses, bans, sources, advisories).
+# Run: cargo deny --locked check
+# LGPL is allowed for GTK/libadwaita/WebKitGTK/VTE (dynamic linking only). TLS is rustls-only; Linux and wasm32 targets.
+
+[graph]
+targets = [
+    { triple = "x86_64-unknown-linux-gnu" },
+    { triple = "aarch64-unknown-linux-gnu" },
+    # browser client (docs/adr/0010-web-client.md)
+    { triple = "wasm32-unknown-unknown" },
+]
+
+[licenses]
+version = 2
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "0BSD",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    "Unicode-DFS-2016",
+    "CC0-1.0",
+    "MPL-2.0",
+    # Boost: permissive; comes with `xxhash-rust` via `leptos`
+    "BSL-1.0",
+    # Mozilla root certificate data (`webpki-root-certs`) via `rustls-platform-verifier` in `reqwest` (MCP over https); permissive.
+    "CDLA-Permissive-2.0",
+    "LGPL-2.1-or-later",
+    "LGPL-3.0-or-later",
+]
+confidence-threshold = 0.8
+
+[licenses.private]
+ignore = true
+
+[bans]
+multiple-versions = "warn"
+deny = [
+    { name = "openssl-sys" },
+    { name = "native-tls" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+
+[advisories]
+yanked = "deny"
+ignore = [
+    # `paste` (macros) is unmaintained; pulled in via `leptos`. Revisit when `leptos` moves to `pastey`; no vulnerability, maintenance status only.
+    "RUSTSEC-2024-0436",
+    # Only under `age`. The core uses X25519 recipients only:
+    # RUSTSEC-2026-0374: `basic-toml` is pulled in by `age` for a build-time i18n macro (not in the runtime);
+    # RUSTSEC-2026-0387: `crypto-bigint` 0.5 is needed by `p256` in `age` for SSH/plugin keys, which we do not use.
+    "RUSTSEC-2026-0374",
+    "RUSTSEC-2026-0387",
+]

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/tunnels",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "api_external": {
+      "type": "boolean"
+    }
+  }
+}

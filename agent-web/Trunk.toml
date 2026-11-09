@@ -1,0 +1,16 @@
+[build]
+dist = "dist"
+public_url = "/app/"
+
+[serve]
+port = 5173
+address = "127.0.0.1"
+
+[[proxy]]
+# Dev mode without CORS: API requests go through trunk to the same origin.
+backend = "http://127.0.0.1:4096/v1"
+rewrite = "/v1"
+
+[[proxy]]
+backend = "ws://127.0.0.1:4096/v1/ws"
+ws = true

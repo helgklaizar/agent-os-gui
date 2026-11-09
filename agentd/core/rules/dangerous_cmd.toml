@@ -1,0 +1,67 @@
+# Observer rules for terminal commands. The file can be replaced without recompiling: the core reads
+# `~/.agentos/rules/dangerous_cmd.toml`, and if it is missing, this copy embedded in the binary.
+#
+# A rule fires when ALL listed conditions hold in ONE part of a command (parts are separated by `;`, `&&`, `||`, `|`, `&`, newline).
+# Before checking, `sudo`, `env`, `nohup`, `time`, `command` and
+# `X=y` assignments are stripped, and the program's directory is dropped (`/bin/rm` → `rm`).
+#
+#   program              the program is one of the values
+#   program_prefix       the program name starts with one of the values (`mkfs.ext4`)
+#   flags_all            all letters are among the short flags (`-rf` → r, f; `--recursive` → r, `--force` → f)
+#   args_any             one of the arguments (not flags) equals one of the values; `$HOME` and `${HOME}` equal `~`
+#   args_all             every value is among the arguments
+#   arg_prefix_any       one of the arguments starts with one of the values
+#   redirect_prefix_any  the target of `>`/`>>` starts with one of the values
+#   pipe_from, pipe_to   the part pipes its output via `|` to a program from `pipe_to` (both are required together)
+#
+# `verdict`: `blocked` — the action is rejected without a request, `asked` — a confirmation card is needed.
+# `severity`: `low`, `med`, `high`.
+
+[[rule]]
+name = "rm_recursive_root_or_home"
+severity = "high"
+verdict = "blocked"
+program = ["rm"]
+flags_all = ["r"]
+args_any = ["/", "/*", "~", "~/", "~/*"]
+
+[[rule]]
+name = "mkfs"
+severity = "high"
+verdict = "blocked"
+program_prefix = ["mkfs"]
+
+[[rule]]
+name = "dd_to_block_device"
+severity = "high"
+verdict = "blocked"
+program = ["dd"]
+arg_prefix_any = ["of=/dev/"]
+
+[[rule]]
+name = "chmod_recursive_777_root"
+severity = "high"
+verdict = "blocked"
+program = ["chmod"]
+flags_all = ["R"]
+args_all = ["777", "/"]
+
+[[rule]]
+name = "curl_pipe_shell"
+severity = "high"
+verdict = "asked"
+pipe_from = ["curl", "wget"]
+pipe_to = ["sh", "bash", "zsh", "dash"]
+
+[[rule]]
+name = "redirect_into_etc_or_ssh"
+severity = "high"
+verdict = "asked"
+redirect_prefix_any = ["/etc", "~/.ssh"]
+
+[[rule]]
+name = "write_tool_into_etc_or_ssh"
+severity = "high"
+verdict = "asked"
+program = ["tee", "cp", "mv", "install", "ln", "sed", "chmod", "chown"]
+arg_prefix_any = ["/etc/", "~/.ssh"]

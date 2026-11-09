@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/security",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ptrace_scope": {
+      "type": "integer"
+    },
+    "disk_encryption": {
+      "type": "string"
+    },
+    "secrets_present": {
+      "type": "boolean"
+    }
+  },
+  "readOnly": true,
+  "description": "Computed by the core; contains no secret values, only a presence flag."
+}

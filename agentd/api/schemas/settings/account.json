@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/account",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "maxLength": 80
+    },
+    "language": {
+      "enum": [
+        "ru",
+        "en"
+      ]
+    },
+    "lat": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "lon": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "observer": {
+          "type": "boolean"
+        },
+        "telemetry": {
+          "type": "boolean"
+        },
+        "injection_guard": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "description": "S7 fields (name, language, security.*) and weather coordinates (lat, lon)."
+}

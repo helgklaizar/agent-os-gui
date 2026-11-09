@@ -1,0 +1,39 @@
+[package]
+name = "agentd-e2e"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "tunnel-fake"
+path = "src/bin/tunnel_fake.rs"
+
+[[bin]]
+name = "mcp-fake"
+path = "src/bin/mcp_fake.rs"
+
+[dependencies]
+# Only for the test MCP server `mcp-fake`.
+serde_json.workspace = true
+
+# End-to-end tests: `core-client` from agent-shell against a running `agentd` binary. Dev dependencies only.
+[dev-dependencies]
+# Enables the `/v1/_test/*` routes in the `agentd` binary built in the same `cargo test` run.
+age.workspace = true
+agentd-api = { workspace = true, features = ["test-support"] }
+agentd-auth.workspace = true
+agentd-core.workspace = true
+agentd-db.workspace = true
+# Enables the `scripted` provider in the `agentd` binary built in the same `cargo test` run.
+agentd-providers = { workspace = true, features = ["test-support"] }
+core-client.workspace = true
+# Checks response shapes against `fake-agentd`; read-only, the other directory is not modified.
+fake-agentd.workspace = true
+serde_json.workspace = true
+tempfile.workspace = true
+tokio.workspace = true
+
+[lints]
+workspace = true

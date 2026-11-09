@@ -1,0 +1,33 @@
+[Unit]
+Description=Agent OS command runner (agent-runner, A7-01) %i
+
+[Service]
+# The accepted connection is standard input. Arguments (--allow-uid, --allow-dir) come from /etc/agent-runner.env (written by the installer).
+EnvironmentFile=/etc/agent-runner.env
+ExecStart=/usr/bin/agentd runner $RUNNER_ARGS
+StandardInput=socket
+StandardOutput=null
+StandardError=journal
+User=agentos-run
+Group=agentos-run
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectControlGroups=true
+# No network (A7-01): own network namespace, AF_UNIX only (the accepted connection is standard input); /run/user (the core socket) is unreachable.
+PrivateNetwork=true
+RestrictAddressFamilies=AF_UNIX
+InaccessiblePaths=/run/user
+LockPersonality=true
+CapabilityBoundingSet=
+TimeoutStopSec=5
+KillMode=control-group
+# Project directories where commands may write are added by the installer (drop-in rw.conf: ReadWritePaths=).
+# Resource limits: a fork bomb and a memory hog are contained by the unit (A7-01, runner_resource_limits).
+MemoryMax=2G
+TasksMax=512
+CPUQuota=200%

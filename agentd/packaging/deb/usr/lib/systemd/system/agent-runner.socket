@@ -1,0 +1,13 @@
+[Unit]
+Description=Agent OS command runner socket (agent-runner, A7-01)
+
+[Socket]
+ListenStream=/run/agent-runner.sock
+Accept=yes
+# The socket owner is set by the installer (agent-runner-install.sh) via the drop-in owner.conf: SocketUser=<owner>.
+SocketMode=0600
+MaxConnections=4
+MaxConnectionsPerSource=4
+
+[Install]
+WantedBy=sockets.target

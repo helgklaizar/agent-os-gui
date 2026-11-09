@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/permissions",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "ask_ttl_min": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1440
+    },
+    "rules_rev": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

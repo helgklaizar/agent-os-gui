@@ -1,0 +1,2 @@
+# Silence: no steps; `bar.sys` comes from the periodic generator if enabled.
+name = "idle"

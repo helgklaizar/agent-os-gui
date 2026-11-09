@@ -1,0 +1,6 @@
+# Quota with hostile text in the account label: the GUI must render it literally.
+name = "bar-evil-label"
+
+[[step]]
+at_ms = 0
+emit = { topic = "bar.quota", type = "snapshot", data = { items = [ { account_id = 1, slug = "cl1", provider = "anthropic", label = "<img src=x onerror=alert(1)>", kind = "api_key", window_h = 5, used = 0.62, rate = 1.4, reset_at = 1793571261, eta_at = 1793566000 } ] } }

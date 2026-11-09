@@ -1,0 +1,15 @@
+Package: agentd
+Version: @VERSION@
+Section: utils
+Priority: optional
+Architecture: @ARCH@
+Maintainer: Agent OS <agentos@agentos.example.org>
+Depends: libc6, libsqlite3-0
+Recommends: openssh-client, wireguard-tools
+Suggests: ollama
+Description: Agent OS core (agentd)
+ User service: HTTP/WS API on a unix socket, the single writer of the
+ sessions.db database, agent permissions and action log, search, scheduled
+ tasks, encrypted backup and export.
+ The package does not start the service itself and does not touch an
+ existing DB; user data is kept on removal.

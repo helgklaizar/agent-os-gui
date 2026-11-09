@@ -1,0 +1,52 @@
+//! HTTP and WS of the `agentd` core (docs/reference/api.md, ADR-0003): unix socket and TCP on one router.
+
+mod access;
+mod actions;
+mod audit;
+mod body;
+mod chat;
+mod connect;
+mod error;
+mod events;
+mod export;
+mod files;
+mod health;
+mod hub;
+mod layers;
+mod limiter;
+mod links;
+mod logout;
+mod metrics;
+mod modules;
+mod mutation_gate;
+mod peer;
+mod permissions;
+mod quotas;
+mod requests;
+mod routes;
+mod search;
+mod secrets;
+mod server;
+mod settings;
+mod state;
+mod table;
+mod tasks;
+#[cfg(feature = "test-support")]
+mod testsupport;
+mod tokens;
+mod tool_results;
+mod topics;
+mod tree;
+mod triggers;
+mod tunnels;
+mod web;
+mod ws;
+
+pub use agentd_core::{AuthFailure, AuthFuture, Authenticator, Principal};
+pub use error::ApiError;
+pub use health::{HealthControl, MigrationStatus, MigrationView};
+pub use hub::{Hub, TopicSource};
+pub use layers::{RequestId, VERSION};
+pub use peer::{PeerInfo, Transport};
+pub use server::{Server, ServerConfig, TcpControl};
+pub use state::Services;

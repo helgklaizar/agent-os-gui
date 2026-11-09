@@ -1,0 +1,29 @@
+[package]
+name = "agentd-core"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[features]
+# Test build only: controllable clock and the `test` token kind. The release build has no such feature.
+test-support = []
+
+[dependencies]
+chrono.workspace = true
+chrono-tz.workspace = true
+croner.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+toml.workspace = true
+uuid.workspace = true
+tokio = { workspace = true, features = ["sync", "time", "rt", "macros"] }
+tracing.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+tokio = { workspace = true, features = ["test-util"] }
+
+[lints]
+workspace = true

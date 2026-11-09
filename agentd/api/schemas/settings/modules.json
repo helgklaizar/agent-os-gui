@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/modules",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {},
+  "description": "Modules are stored in the modules table and exposed via /modules; there are no document fields."
+}

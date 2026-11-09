@@ -1,0 +1,28 @@
+[Unit]
+Description=Agent OS core (agentd)
+After=default.target
+
+[Service]
+Type=notify
+NotifyAccess=main
+ExecStart=/usr/bin/agentd serve
+Restart=on-failure
+RestartSec=2
+# Exit code 3: the DB is newer than the code (ADR-0006): a restart will not help.
+RestartPreventExitStatus=3
+# The core sends sd_notify WATCHDOG=1 twice as often (ADR-0006); a hang longer than 30 s means a restart.
+WatchdogSec=30
+# The socket and DB live in user directories; keys live in ~/.agentos/keys.env (mode 0600), never in the unit.
+RuntimeDirectory=agentd
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=%h/.agentos %t
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+LockPersonality=true
+MemoryDenyWriteExecute=true
+
+[Install]
+WantedBy=default.target

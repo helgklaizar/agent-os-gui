@@ -1,0 +1,4 @@
+#!/bin/sh
+# User data (~/.agentos: DB, keys, memory, export) is kept on any action, including purge:
+# the package must not delete it (project rule: moving to *.bak-YYYYMMDD is done by the owner).
+exit 0

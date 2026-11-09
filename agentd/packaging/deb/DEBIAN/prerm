@@ -1,0 +1,3 @@
+#!/bin/sh
+# Deletes nothing and does not stop other sessions: the user stops the user service themselves.
+exit 0

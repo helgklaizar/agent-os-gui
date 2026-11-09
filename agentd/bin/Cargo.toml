@@ -1,0 +1,45 @@
+[package]
+name = "agentd"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "agentd"
+path = "src/main.rs"
+
+[features]
+# Test build (A1-11): controllable clocks, the test token kind, /_test/advance.
+test-support = ["agentd-api/test-support", "agentd-auth/test-support", "agentd-core/test-support", "agentd-providers/test-support"]
+
+[dependencies]
+agentd-api.workspace = true
+agentd-auth.workspace = true
+agentd-core.workspace = true
+zbus.workspace = true
+futures-util.workspace = true
+age.workspace = true
+agentd-db.workspace = true
+agentd-providers.workspace = true
+agentd-sys.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+tempfile.workspace = true
+anyhow.workspace = true
+tokio = { workspace = true, features = ["signal", "process"] }
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+age.workspace = true
+agentd-db.workspace = true
+futures-util.workspace = true
+tokio-tungstenite.workspace = true
+tokio = { workspace = true, features = ["process"] }
+serde_json.workspace = true
+tempfile.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/personas",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "balance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fallback": {
+          "enum": [
+            "local",
+            "other",
+            "wait"
+          ]
+        },
+        "warn_pct": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "priority_persona_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "distribution": {
+          "enum": [
+            "even",
+            "priority",
+            "cheapest"
+          ]
+        },
+        "max_parallel": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "unified_feed": {
+          "type": "boolean"
+        },
+        "shared_memory": {
+          "type": "boolean"
+        },
+        "quiet_from": {
+          "type": "string",
+          "x-format": "hhmm"
+        },
+        "quiet_to": {
+          "type": "string",
+          "x-format": "hhmm"
+        }
+      }
+    },
+    "roles": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chat": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "observer": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "code": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "feed": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    }
+  },
+  "description": "Global balance.* and roles. max_parallel is the single name (S7 and the core)."
+}

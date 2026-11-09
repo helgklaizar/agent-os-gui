@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/connections",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "contacts": {
+      "type": "array"
+    },
+    "routes": {
+      "type": "array"
+    },
+    "mcp": {
+      "type": "array"
+    }
+  },
+  "description": "List items are validated in code (gateway/routing.rs)."
+}

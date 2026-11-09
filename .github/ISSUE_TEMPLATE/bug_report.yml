@@ -1,0 +1,45 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The project is alpha; the API is not stable. Do not paste tokens, secrets or personal data.
+        Security problems: use a private security advisory instead (see SECURITY.md).
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options: [agentd, agent-shell (GTK), agent-web (browser), fake-agentd, docs, other]
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Actual behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "0.0.1-alpha / commit hash"
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS and version, browser (for agent-web), Rust version.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant output with secrets removed.
+      render: text

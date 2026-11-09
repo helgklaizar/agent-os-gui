@@ -1,0 +1,10 @@
+# gitleaks configuration for `gitleaks dir .`. Default rules stay in force.
+# The cargo build directory `target/` is not part of the repository, but crate metadata there
+# (`elliptic_curve` docs) mentions "private key" and causes false positives.
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "cargo build directory"
+paths = ['''(^|/)target/''']

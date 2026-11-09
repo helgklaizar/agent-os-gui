@@ -1,0 +1,12 @@
+allow-unwrap-in-tests = true
+
+# Web client rule (docs/adr/0010-web-client.md): text reaches the page only as text nodes; HTML insertion and string evaluation are forbidden.
+disallowed-methods = [
+    { path = "web_sys::Element::set_inner_html", reason = "HTML insertion is forbidden, use text nodes only" },
+    { path = "web_sys::Element::set_outer_html", reason = "HTML insertion is forbidden, use text nodes only" },
+    { path = "web_sys::Element::insert_adjacent_html", reason = "HTML insertion is forbidden, use text nodes only" },
+    { path = "web_sys::HtmlDocument::write", allow-invalid = true, reason = "document.write is forbidden" },
+    { path = "web_sys::HtmlDocument::writeln", allow-invalid = true, reason = "document.write is forbidden" },
+    { path = "js_sys::eval", reason = "evaluating strings is forbidden" },
+]
+# HtmlDocument::write exists only with the `HtmlDocument` feature of web-sys; without it the path is unreachable (allow-invalid), with it the ban applies.

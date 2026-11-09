@@ -1,0 +1,7 @@
+target/
+fake-agentd/.data/
+.DS_Store
+
+agent-web/dist/
+agent-web/pkg/
+agent-web/dist.bak-*/

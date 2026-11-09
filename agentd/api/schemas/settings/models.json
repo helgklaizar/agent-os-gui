@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/models",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "accounts": {
+      "type": "object"
+    },
+    "prices": {
+      "type": "object"
+    },
+    "context_budget": {
+      "type": "integer",
+      "minimum": 256,
+      "maximum": 4000000
+    }
+  },
+  "description": "Nested fields accounts.<id> and prices.<model> are validated in code (settings_models.rs)."
+}

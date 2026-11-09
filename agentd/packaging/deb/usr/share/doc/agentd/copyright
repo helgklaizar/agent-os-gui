@@ -1,0 +1,9 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: agentd
+Source: https://github.com/helgklaizar/agent-os-gui
+
+Files: *
+Copyright: Copyright 2026 Agent OS
+License: Apache-2.0
+ Licensed under the Apache License, Version 2.0. On Debian systems the full
+ text is available in /usr/share/common-licenses/Apache-2.0.

@@ -1,0 +1,35 @@
+[Unit]
+Description=Agent OS observer (agent-watch, A7-03) %i
+
+[Service]
+# The accepted connection is standard input. Arguments (--allow-uid, --rules-dir) come from /etc/agent-watch.env (written by the installer).
+EnvironmentFile=/etc/agent-watch.env
+ExecStart=/usr/bin/agentd watch $WATCH_ARGS
+StandardInput=socket
+StandardOutput=null
+StandardError=journal
+# Own uid: the process sees no model keys, no DB, no home directories, no network.
+User=agentos-watch
+Group=agentos-watch
+UMask=0077
+NoNewPrivileges=true
+PrivateNetwork=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+InaccessiblePaths=/run/user
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX
+RestrictNamespaces=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+CapabilityBoundingSet=
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+MemoryMax=128M
+TasksMax=16
+TimeoutStopSec=5
+KillMode=control-group

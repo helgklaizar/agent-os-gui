@@ -1,0 +1,18 @@
+# Injection markers in incoming untrusted text. The file can be replaced without recompiling:
+# `~/.agentos/rules/injection.toml`, otherwise this built-in copy. Case-insensitive comparison, whitespace is collapsed.
+# This is a heuristic: a missed injection does not make the text trusted, it always stays `untrusted`.
+severity = "high"
+markers = [
+  "ignore previous instructions",
+  "ignore all previous",
+  "ignore the above",
+  "disregard previous instructions",
+  "disregard all prior",
+  "you are now",
+  "new instructions:",
+  "system prompt",
+  "reveal your instructions",
+  "set permission to allow",
+  "grant yourself",
+  "send me your token",
+]

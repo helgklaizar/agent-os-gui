@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/about",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "core_version": {
+      "type": "string"
+    },
+    "api": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "major": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "minor": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "db_version": {
+      "type": "integer"
+    },
+    "capabilities": {
+      "type": "array"
+    }
+  },
+  "readOnly": true,
+  "description": "Computed by the core; writes return 403."
+}

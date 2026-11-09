@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "settings/schedule",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "tz": {
+      "enum": [
+        "Asia/Jerusalem"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "time": {
+          "type": "string",
+          "x-format": "hhmm"
+        }
+      }
+    },
+    "backup": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "time": {
+          "type": "string",
+          "x-format": "hhmm"
+        },
+        "recipient": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "primary": {
+              "type": "string",
+              "maxLength": 512
+            },
+            "recovery": {
+              "type": "string",
+              "maxLength": 512
+            }
+          }
+        }
+      }
+    }
+  },
+  "description": "Time HH:MM in Asia/Jerusalem."
+}

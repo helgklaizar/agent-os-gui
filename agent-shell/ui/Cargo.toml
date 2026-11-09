@@ -1,0 +1,58 @@
+[package]
+name = "ui"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "ui"
+path = "src/lib.rs"
+
+[[bin]]
+name = "agent-shell"
+path = "src/main.rs"
+
+# UI scenarios under headless Wayland (`weston --backend=headless`): our own runner, because GTK lives in one thread.
+[[test]]
+name = "scenarios"
+path = "tests/scenarios/main.rs"
+harness = false
+
+# The `TokenSource::TestFile` variant exists only with this feature; it is disabled in the product build.
+[features]
+test-token-file = ["core-client/test-token-file"]
+
+[dependencies]
+async-channel.workspace = true
+controllers.workspace = true
+core-client.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+# Tests launch a real process with the token from a file: the feature is enabled only for test builds.
+ui = { path = ".", features = ["test-token-file"] }
+fake-agentd.workspace = true
+# evil strings for scenarios (`testkit::evil_strings`)
+controllers = { workspace = true, features = ["testkit"] }
+tempfile.workspace = true
+tokio.workspace = true
+
+# GTK is built only on Linux (macOS has no gtk4/libadwaita; the crate builds there without them).
+[target.'cfg(target_os = "linux")'.dependencies]
+gtk4.workspace = true
+libadwaita.workspace = true
+vte4.workspace = true
+webkit6.workspace = true
+
+# Own set instead of `[lints] workspace = true`: `ui` allows unsafe (GTK FFI) only with a justification comment,
+# so `forbid` is replaced by `deny`; the rest repeats [workspace.lints.clippy].
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "deny", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"

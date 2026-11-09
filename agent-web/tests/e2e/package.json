@@ -1,0 +1,11 @@
+{
+  "name": "agent-web-e2e",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Browser scenarios of agent-web. Dev dependencies live outside cargo and are not part of the build or cargo deny.",
+  "scripts": { "test": "playwright test" },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.55.0"
+  }
+}

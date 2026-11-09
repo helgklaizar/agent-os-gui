@@ -1,0 +1,11 @@
+#!/bin/sh
+# The service is neither started nor enabled: the user does that (`systemctl --user enable --now agentd`).
+# An existing DB is left alone; agentd applies migrations itself on first start (a pre-migration snapshot is taken before them).
+set -e
+if command -v systemd-sysusers >/dev/null 2>&1; then
+    systemd-sysusers /usr/lib/sysusers.d/agentd.conf || true
+fi
+if command -v sysctl >/dev/null 2>&1; then
+    sysctl -q -p /usr/lib/sysctl.d/90-agentd.conf || true
+fi
+exit 0

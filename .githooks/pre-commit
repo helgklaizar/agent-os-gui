@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+# Secret guard. Enable on a fresh clone: git config core.hooksPath .githooks
+#   layer 1: built-in key patterns (scripts/secret-pattern.sh), values are never printed
+#   layer 2: refuse files that .gitignore excludes (add -f bypasses .gitignore)
+#   layer 3: gitleaks on staged changes (skipped with a notice when not installed; fails if CHECK_STRICT=1)
+set -uo pipefail
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || { echo "[pre-commit] not a repository" >&2; exit 1; }
+cd "$ROOT" || exit 1
+
+# shellcheck source=../scripts/secret-pattern.sh
+. "$ROOT/scripts/secret-pattern.sh" || { echo "[pre-commit] scripts/secret-pattern.sh is missing, commit rejected" >&2; exit 1; }
+if git diff --cached -U0 | grep -E '^\+' | grep -Eq "$SECRET_PATTERN"; then
+	echo "[pre-commit] layer 1: a secret was found in staged changes (value not printed), commit rejected" >&2
+	exit 1
+fi
+echo "[pre-commit] layer 1 (built-in patterns): ok"
+
+bad=$(git ls-files -ci --exclude-standard)
+if [ -n "$bad" ]; then
+	echo "[pre-commit] layer 2: tracked files are excluded by .gitignore:" >&2
+	echo "$bad" >&2
+	echo "[pre-commit] fix: git rm --cached <path>" >&2
+	exit 1
+fi
+if [ -f .gitignore ] && grep -Eqx '\*|/\*|\*\*' .gitignore; then
+	echo "[pre-commit] layer 2: .gitignore ignores everything ('*'), which would hide files from the guard" >&2
+	exit 1
+fi
+echo "[pre-commit] layer 2 (.gitignore): ok"
+
+if command -v gitleaks >/dev/null 2>&1; then
+	if gitleaks git --pre-commit --staged --redact --no-banner . >/dev/null 2>&1; then
+		echo "[pre-commit] layer 3 (gitleaks): ok"
+	else
+		echo "[pre-commit] layer 3: gitleaks found a secret (run: gitleaks git --pre-commit --staged --redact), commit rejected" >&2
+		exit 1
+	fi
+else
+	if [ "${CHECK_STRICT:-0}" = 1 ]; then
+		echo "[pre-commit] layer 3: gitleaks is not installed and CHECK_STRICT=1, commit rejected" >&2
+		exit 1
+	fi
+	echo "[pre-commit] layer 3 (gitleaks) skipped: not installed" >&2
+fi
+exit 0

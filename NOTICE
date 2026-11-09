@@ -1,0 +1,9 @@
+Agent OS GUI
+Copyright 2026 helgklaizar and Agent OS GUI contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+It depends on third-party open-source libraries distributed under their own
+licenses (MIT, Apache-2.0, BSD, ISC, MPL-2.0, and LGPL for the dynamically
+linked GTK4, libadwaita, WebKitGTK and VTE libraries). The allowed license set
+is enforced by `cargo deny` (see deny.toml).

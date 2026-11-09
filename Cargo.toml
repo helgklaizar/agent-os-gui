@@ -1,0 +1,119 @@
+[workspace]
+resolver = "3"
+members = [
+    "agent-web",
+    "agent-shell/core-client",
+    "agent-shell/controllers",
+    "agent-shell/ui",
+    "agent-shell/integration-tests",
+    "fake-agentd",
+    "agentd/core",
+    "agentd/sys",
+    "agentd/db",
+    "agentd/auth",
+    "agentd/api",
+    "agentd/providers",
+    "agentd/bin",
+    "agentd/e2e",
+]
+
+[workspace.package]
+version = "0.0.1-alpha"
+license = "Apache-2.0"
+repository = "https://github.com/helgklaizar/agent-os-gui"
+edition = "2024"
+rust-version = "1.99.1"
+publish = false
+
+# Dependency versions are declared once here; exact versions are pinned in Cargo.lock.
+# Members use `dep.workspace = true`.
+[workspace.dependencies]
+agentd-api = { path = "agentd/api" }
+agentd-auth = { path = "agentd/auth" }
+agentd-core = { path = "agentd/core" }
+agentd-db = { path = "agentd/db" }
+agentd-providers = { path = "agentd/providers" }
+agentd-sys = { path = "agentd/sys" }
+anyhow = "1.0"
+async-channel = "2.5"
+# Encrypted export and backup: only the `age` core, no CLI and no async extensions.
+age = { version = "0.12", default-features = false }
+# Task scheduling: clocks and time zones, cron parsing.
+chrono = { version = "0.4", default-features = false, features = ["std", "clock"] }
+chrono-tz = "0.10"
+croner = "4"
+bytes = "1"
+# Core API server; no default features: only http1, tokio, json and WebSocket.
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio", "json", "ws", "multipart"] }
+controllers = { path = "agent-shell/controllers" }
+core-client = { path = "agent-shell/core-client" }
+fake-agentd = { path = "fake-agentd" }
+fluent-bundle = "0.16"
+# .ftl AST parsing in key-parity tests (already in the tree via fluent-bundle).
+fluent-syntax = "0.12"
+# Stream/Sink traits for tokio-tungstenite (WebSocketStream is unusable without them); already in the tree via tokio-tungstenite, std and sink only.
+futures-util = { version = "0.3", default-features = false, features = ["std", "sink"] }
+http-body-util = "0.1"
+# rustls only: roots come from the system store (rustls-native-certs), crypto provider is ring.
+hyper-rustls = { version = "0.27", default-features = false, features = ["native-tokio", "http1", "tls12", "ring"] }
+hyper = { version = "1.12", features = ["http1", "client", "server"] }
+hyper-util = { version = "0.1", features = ["tokio", "client-legacy", "server", "http1"] }
+rand = "0.10"
+# MCP client: client side only, child process and Streamable HTTP transports; no server and no default TLS provider.
+# `https`: TLS on rustls without a default provider (`reqwest-tls-no-provider`); the core installs the `ring` crypto provider itself.
+rmcp = { version = "3.8", default-features = false, features = ["client", "transport-child-process", "transport-streamable-http-client-reqwest", "reqwest-tls-no-provider"] }
+# Own HTTP client for MCP over https with an extra certificate authority (`AGENTD_MCP_CA_FILE`); same version as `rmcp`.
+reqwest = { version = "0.13", default-features = false, features = ["rustls-no-provider"] }
+# Test certificates (dev-dependency of providers only, MCP-over-https test).
+rcgen = { version = "0.14", default-features = false, features = ["ring", "pem"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+rusqlite = "0.41"
+# Safe system calls (statvfs, socket, getuid) without unsafe in our code; used only by the agentd-sys crate.
+rustix = { version = "1.1", features = ["fs", "process", "net"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sha2 = "0.11"
+subtle = "2.6"
+tempfile = "3.27"
+thiserror = "2.0"
+tokio = { version = "1.54", features = ["rt-multi-thread", "net", "sync", "time", "macros", "io-util"] }
+tokio-tungstenite = "0.30"
+toml = "1.1"
+ui = { path = "agent-shell/ui" }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "env-filter", "std", "ansi"] }
+unic-langid = "0.9"
+# D-Bus: OS notification capture; tokio integration only, no default async-io.
+zbus = { version = "6", default-features = false, features = ["tokio"] }
+web-time = "1"
+# Browser client: wasm32 target only; GTK and agentd do not depend on it.
+js-sys = "0.3"
+leptos = { version = "0.8", features = ["csr"] }
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = ["Window", "Document", "Element", "HtmlElement", "HtmlInputElement", "HtmlTextAreaElement", "Location", "Storage", "WebSocket", "MessageEvent", "CloseEvent", "Event", "KeyboardEvent", "Request", "RequestInit", "Headers", "Response", "AbortController", "AbortSignal", "File", "FileList", "FormData", "Blob", "Notification", "NotificationOptions", "NotificationPermission", "VisibilityState"] }
+uuid = { version = "1.29", features = ["v7"] }
+# GTK pair verified on Linux (GTK 4.14, libadwaita 1.5); GTK is unavailable on macOS, so `ui` enables it on Linux only.
+gtk4 = { version = "0.11", features = ["v4_14"] }
+libadwaita = { version = "0.9", features = ["v1_5"] }
+# Embedded browser and terminal; versions verified on Linux (WebKitGTK 2.52, VTE 0.76).
+webkit6 = "0.6"
+vte4 = "0.10"
+
+# Shared lint rules. `unwrap_used` for core-client and controllers is denied via `#![deny(clippy::unwrap_used)]` in their lib.rs
+# (tests excepted: clippy.toml, allow-unwrap-in-tests).
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = { level = "deny", priority = -1 }
+dbg_macro = "deny"
+todo = "deny"
+
+# Browser client profile: minimal wasm size; agentd and GTK do not use it. Build: trunk --cargo-profile web.
+[profile.web]
+inherits = "release"
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"

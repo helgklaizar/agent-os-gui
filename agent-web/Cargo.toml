@@ -1,0 +1,20 @@
+[package]
+name = "agent-web"
+version.workspace = true
+license.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+description = "Browser client of Agent OS: Rust to wasm, Leptos, logic from the controllers crate"
+
+[dependencies]
+controllers.workspace = true
+leptos.workspace = true
+serde_json.workspace = true
+js-sys.workspace = true
+wasm-bindgen.workspace = true
+wasm-bindgen-futures.workspace = true
+web-sys.workspace = true
+
+[lints]
+workspace = true

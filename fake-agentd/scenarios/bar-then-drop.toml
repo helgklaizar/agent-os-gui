@@ -1,0 +1,14 @@
+# Bar values, WS drops after 5 s, comes back after 7 s (virtual clock).
+name = "bar-then-drop"
+
+[[step]]
+at_ms = 0
+emit = { topic = "bar.sys", data = { cpu = 14, gpu = 20, ram = 66, disk = 38, temp = 38 } }
+
+[[step]]
+at_ms = 5000
+action = "drop_ws"
+
+[[step]]
+at_ms = 7000
+action = "restore"
